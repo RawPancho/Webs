@@ -1,157 +1,521 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Manejo Personal</title>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
+        <title>Manejo Personal v0.9</title>
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">  
-  <!--Styling-->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-  
-  <style>
-</style>
-</head>
-<body class="body">
- <p>Sheets API Quickstart</p>
+        <style>
+            .body {background-color: rgb(24, 26, 27); color: #EEE }
+            .mainDiv {margin: 8px; box-sizing: border-box;}
+            .text-box {background-color: #000000; color: #EEE; align-self: flex-start;}
+            .spaced {margin-top:4px; margin-bottom:4px;}
+            .padded {padding:8px;}
+            .section {margin: 4px; padding: 4px 8px 4px 8px; background-color: rgb(43, 44, 42); border-radius: 8px;}
+            .cmb-btn {color: #ffffff;}
+            .Servicio { background-color: #302381; border-color: #302381;}
+            .Hobby { background-color: #85200c; border-color: #85200c;}
+            .Credito { background-color: #b45f06;}
+            .Bondi { background-color: #38761d;}
+            .Calidad { background-color: #ccb011;}
+            .Ahorro { background-color: #ffffff; color: #000000;}
+            .Otro { background-color: #cc6cc0;}
+            .activity.card { background-color: rgb(24, 26, 27); max-width: 18rem; max-height: 18rem; min-width: 17rem; border-radius: 8px; margin: 8px;}
+            .card-header:first-child { border-radius: 8px 8px 0 0;}
+            .card-footer.full-flex { display: flex; padding: 0;}
+            .half-flex-btn { flex: 50%; margin: -1px; border-radius: 0;}
+            .half-flex-btn.left { border-bottom-left-radius: 8px;}
+            .half-flex-btn.right { border-bottom-right-radius: 8px;}
+            .section.card-deck { padding: 8px; display: flex; flex-wrap: wrap;}
+            .center { text-align: center;}
+            .timeSlider { background: #FF8282;}
+            #ex1Slider.slider-selection { background: #BABABA;}
 
-    <!--Add buttons to initiate auth sequence and sign out-->
-    <button id="authorize_button" onclick="handleAuthClick()">Authorize</button>
-    <button id="signout_button" onclick="handleSignoutClick()">Sign Out</button>
+        </style>
+    </head>
+    <body class="body">
+        <div class="mainDiv">
+            <a href="https://docs.google.com/spreadsheets/d/15C2O910bxLUgMUFJ1FGRKtzwT2srX1s4hQPWFJSIMK4/edit">Simply's Ahorro Tracker</a><br>
 
-    <pre id="content" style="white-space: pre-wrap;"></pre>
+            <!--Add buttons to initiate auth sequence and sign out-->
+            <button type="button" class="spaced btn btn-primary" id="authorize_button" hidden="true">
+                <span id="authorizeLoadIcon" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" hidden="true"></span>
+                Autorizar
+            </button>
+            <button type="button" class="spaced btn btn-primary" id="signout_button" hidden="true">Desvincular</button>
+            <br>
+            <div class="section">
+
+                <div class="btn-group spaced" data-toggle="buttons">
+			
+                    <label class="btn cmb-btn Servicio active">
+                        <input type="radio" name="activityCat" value="0" autocomplete="off" checked>
+                        Servicio
+                    </label>
+                    <label class="btn cmb-btn Hobby">
+                        <input type="radio" name="activityCat" value="1" autocomplete="off">
+                        Hobby
+                    </label>
+                    <label class="btn cmb-btn Credito">
+                        <input type="radio" name="activityCat" value="2" autocomplete="off">
+                        Credito
+                    </label>
+                    <label class="btn cmb-btn Bondi">
+                        <input type="radio" name="activityCat" value="3" autocomplete="off">
+                        Bondi
+                    </label>
+                    <label class="btn cmb-btn Calidad">
+                        <input type="radio" name="activityCat" value="4" autocomplete="off">
+                        Calidad
+                    </label>
+                    <label class="btn cmb-btn Ahorro">
+                        <input type="radio" name="activityCat" value="5" autocomplete="off">
+                        Ahorro Necessity
+                    </label>
+                    <label class="btn cmb-btn Otro">
+                        <input type="radio" name="activityCat" value="6" autocomplete="off">
+                        Otro
+                    </label>
+
+                </div>
+
+                <br>
+                <label for="txt_activity_name">Activity:</label>
+                <input type="text" id="txt_activity_name" class="spaced container-fluid form-control text-box">
+                
+                <label for="txt_activity_details">Details:</label>
+                <input type="text" id="txt_activity_details" class="spaced container-fluid form-control text-box">
+
+                <label for="sld_time_offset">Time offset:</label>
+                <label for="sld_time_offset" id="lbl_current_offset">0:00</label>
+                <input type="range" id="sld_time_offset" class="custom-range" min="0" max="22" value="17" oninput="time_offset_change()">
+                <br>
+                <button type="button" class="spaced btn btn-success" id="btn_send_activity" onclick="sendActivityClick();">Send Activity</button>
+            </div>
+            <div id="activitiesDeck" class="section card-deck">
+
+                <template id="actCard-template">
+                    <div id="actCard" class="activity card">
+                        <div id="header" class="card-header" style="margin: -1px;">
+                            <h5 id="title" class="card-title">***** ********</h5>
+                            <h6 id="categoryName" class="card-subtitle text-muted">*******</h6>
+                        </div>
+                        <div class="card-body" style="display: flex;">
+                            <div class="cotainer" style="flex:-moz-available;">
+                                <p id="startTime" class="center">--/--/---- --:--:--</p>
+                                <p id="ellapsedTime" class="center">--:--:--</p>
+                            </div>
+                        </div>
+                        <div class="card-footer full-flex">
+                            <button id="btnCloseAct" type="button" class="btn btn-primary half-flex-btn left">Close Activity</button>
+                            <button id="btnCancelAct" type="button" class="btn btn-danger half-flex-btn right">Cancel Activity</button>
+                        </div>
+                    </div>
+                </template>
+                
+            </div>
+			<div id="quickAccessDeck" class="quickAccessDeck">
+				
+				<template id="quickAccess-template">
+					<button id="quick" type="button" class="btn btn-primary full-flex">********</button>
+				</template>
+				
+			</div>
+        </div>
+    </body>
 
     <script type="text/javascript">
-      /* exported gapiLoaded */
-      /* exported gisLoaded */
-      /* exported handleAuthClick */
-      /* exported handleSignoutClick */
+        // Client ID and API key from the Developer Console
+        var CLIENT_ID = '1070684392615-c56qviqqoaohf5vl60ti41jskuitdis9.apps.googleusercontent.com';
+        var API_KEY = 'AIzaSyDRh-saaqsHUPlr5KspuBssvaoJbH643lc';
+        var SPREADSHEETID = '15C2O910bxLUgMUFJ1FGRKtzwT2srX1s4hQPWFJSIMK4';
+        // Array of API discovery doc URLs for APIs used by the quickstart
+        var DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
+        // Authorization scopes required by the API; multiple scopes can be
+        // included, separated by spaces.
+        var SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
-      // TODO(developer): Set to client ID and API key from the Developer Console
-      const CLIENT_ID = '1070684392615-c56qviqqoaohf5vl60ti41jskuitdis9.apps.googleusercontent.com';
-      const API_KEY = 'AIzaSyDRh-saaqsHUPlr5KspuBssvaoJbH643lc';
+        const authorizeButton = document.getElementById('authorize_button');
+        const signoutButton = document.getElementById('signout_button');
+        const txtActivityName = document.getElementById('txt_activity_name');
+        const txtActivityDetails = document.getElementById('txt_activity_details');
+        const cmbActivityCategory = document.getElementById('cmb_activity_category');
+        const slider = document.getElementById("sld_time_offset");
+        const timeOffsetLabel = document.getElementById("lbl_current_offset");
+        const actCardT = document.getElementById("actCard-template");
+		const quickAccessT = document.getElementById("quickAccess-template");
 
-      // Discovery doc URL for APIs used by the quickstart
-      const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
+        const cardDeck = document.getElementById('activitiesDeck');
+		const quickAccessDeck = document.getElementById('quickAccessDeck');
 
-      // Authorization scopes required by the API; multiple scopes can be
-      // included, separated by spaces.
-      const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+        const TIMEDATAPAGE = "'Time allocation data'!";
+        const CATEGORYRANGES = ["B{0}:E{1}", "F{0}:I{1}", "J{0}:M{1}", "N{0}:Q{1}", "R{0}:U{1}", "V{0}:Y{1}", "Z{0}:AC{1}"];
+        const CATEGORYCLASSES = ["Servicio", "Hobby", "Credito", "Bondi", "Calidad", "Ahorro", "Otro"];
+        const CATEGORYNAMES = ["Servicio", "Useful Hobby", "Credito", "Bondi", "Calidad", "Ahorro Necessity", "Otro"];
+		const QUICKACCESSRANGE = "Processing!F3:G";
 
-      let tokenClient;
-      let gapiInited = false;
-      let gisInited = false;
+        const TIMEOFFSETS = [-3600, -2700, -2400, -1800, -1200, -900, -750, -600, -450, -300, -240, -180, -120, -60, -30, -5, 0, 5, 15, 30, 60, 90, 120]
 
-      document.getElementById('authorize_button').style.visibility = 'hidden';
-      document.getElementById('signout_button').style.visibility = 'hidden';
+        var lastUsedIX = [0, 0, 0, 0, 0, 0, 0];
+		var quickAccess = [];
 
-      /**
-       * Callback after api.js is loaded.
-       */
-      function gapiLoaded() {
-        gapi.load('client', initializeGapiClient);
-      }
+        var timers = []
+        var actCards = []
 
-      /**
-       * Callback after the API client is loaded. Loads the
-       * discovery doc to initialize the API.
-       */
-      async function initializeGapiClient() {
-        await gapi.client.init({
-          apiKey: API_KEY,
-          discoveryDocs: [DISCOVERY_DOC],
-        });
-        gapiInited = true;
-        maybeEnableButtons();
-      }
+        window.onload = function() { setInterval(updateTimers, 1000);}
 
-      /**
-       * Callback after Google Identity Services are loaded.
-       */
-      function gisLoaded() {
-        tokenClient = google.accounts.oauth2.initTokenClient({
-          client_id: CLIENT_ID,
-          scope: SCOPES,
-          callback: '', // defined later
-        });
-        gisInited = true;
-        maybeEnableButtons();
-      }
-
-      /**
-       * Enables user interaction after all libraries are loaded.
-       */
-      function maybeEnableButtons() {
-        if (gapiInited && gisInited) {
-          document.getElementById('authorize_button').style.visibility = 'visible';
+        function onReady() {
+            time_offset_change();
+            fetchIXs();
+			fetchQuickAccess();
+            //findOpenActivities is called through fetchIX to avoid await, async, then, callback hell
         }
-      }
+		
+		function fetchQuickAccess() {
+			var newRange = QUICKACCESSRANGE;
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: SPREADSHEETID,
+                range: newRange,
+            }).then(function(response) {
+				console.log(response);
+                for (var i = 0; i < response.result.values.length; i++) {
+					var cat = CATEGORYNAMES.indexOf(response.result.values[i][0]);
+					var name = response.result.values[i][1];
+					createQuickAccessBTN(name, cat);
+				}
+            });
+		}
+		
+		function createQuickAccessBTN(name, categoryIX) {
+			var clone = quickAccessT.content.cloneNode(true);
+			clone.querySelector("[id='quick']").className += " " + CATEGORYCLASSES[categoryIX];
+			clone.querySelector("[id='quick']").innerHTML = name;
+			clone.querySelector("[id='quick']").onclick = function() { sendActivity(name, "", categoryIX, TIMEOFFSETS[slider.value]) };
+			quickAccessDeck.appendChild(clone);
+		}
+		
+        function onIXsFetched() {
+            findOpenActivities();
+        }
 
-      /**
-       *  Sign in the user upon button click.
-       */
-      function handleAuthClick() {
-        tokenClient.callback = async (resp) => {
-          if (resp.error !== undefined) {
-            throw (resp);
-          }
-          document.getElementById('signout_button').style.visibility = 'visible';
-          document.getElementById('authorize_button').innerText = 'Refresh';
-          await listMajors();
+        function sendActivity(name, details, categoryIX, timeOffset) {
+            var range = getCategoryRange(categoryIX);
+
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: SPREADSHEETID,
+                range: range,
+            }).then(function(response) {
+
+                var ix = response.result.values.length;
+                var resRange = response.result;
+                if (resRange.values.length > 0) {
+                    for (i = 0; i < resRange.values.length; i++) {
+                        var row = resRange.values[i];
+                        
+                        if(row[0] == name && row[2] == undefined)
+                            closeActivity(getCategoryRange(categoryIX, lastUsedIX[categoryIX] + ix, lastUsedIX[categoryIX] + ix), getDateTimeString(timeOffset));
+                    }
+                }
+                
+                createActivity(categoryIX, lastUsedIX[categoryIX] + ix, name, getDateTimeString(timeOffset));
+            })
+        }
+
+        function closeActivity(range, date=-1) {
+            if (date==-1)
+                date = getDateTimeString(TIMEOFFSETS[slider.value]);
+            
+            var values = []
+
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: SPREADSHEETID,
+                range: range,
+            }).then(function(response) {
+                values = response.result.values[0];
+
+                values[2] = date;
+                values[3] = txtActivityDetails.value;
+
+                write(range, values, endActivityCallback);
+            });
+        }
+
+        function cancelActivity(range) {
+            if (confirm("Are you sure you want to cancel?"))
+                write(range, ["", "", "", ""], endActivityCallback);
+        }
+
+        function createActivity(actIX, rangeN, name, date) {
+            write(getCategoryRange(actIX, rangeN), [name, date, "", ""], createActivityCallback, actIX);
+        }
+
+        function createActivityCallback(range, data, actIX) {
+            createActivityCard(data[0], data[1], actIX, range);
+        }
+
+        function endActivityCallback(range, data) {
+            var card = popActCardByRange(range);
+            cardDeck.removeChild(card);
+        }
+
+        function fetchIXs() {
+            var i = 0;
+            for (i = 0; i < CATEGORYRANGES.length; i++) {
+                fetchIX(i);
+            }
+        }
+
+        function fetchIX(ix) {
+            var newRange = getCategoryRange(ix, 5);
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: SPREADSHEETID,
+                range: newRange,
+            }).then(function(response) {
+                lastUsedIX[ix] = response.result.values.length + 3; // Index points to last activity in category (the one possibly open)
+                
+                var i = 0; // If all IXs have been fetched -> onIXsFetched();
+                for (i = 0; i < CATEGORYRANGES.length; i++)
+                    if (lastUsedIX[i] == 0)
+                        return;
+
+                onIXsFetched();
+            });
+        }
+
+        function findOpenActivities() {
+            var i = 0;
+            for (i = 0; i < CATEGORYRANGES.length; i++) {
+                fetchOpenActivity(i);
+            }
+        }
+
+        function fetchOpenActivity(categoryIX) {
+            var range = getCategoryRange(categoryIX);
+
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: SPREADSHEETID,
+                range: range,
+            }).then(function(response) {
+                
+                var resRange = response.result;
+                if (resRange.values.length > 0)
+                    for (i = 0; i < resRange.values.length; i++) {
+                        var row = resRange.values[i];
+                        
+                        if(row[2] == undefined)
+                            createActivityCard(row[0], row[1], categoryIX, getCategoryRange(categoryIX, lastUsedIX[categoryIX] + i, lastUsedIX[categoryIX] + i));
+                    }
+                
+            });
+        }
+
+        function getCategoryRange(ix, row = -1, finalRow = -1) {
+            var r = CATEGORYRANGES[ix];
+            if (row != -1)
+                r = r.replace("{0}", row.toString());
+            else
+                // Since the first activity is in row 6 this actually goes 2 before the latest activity
+                r = r.replace("{0}", lastUsedIX[ix].toString());
+            
+            if (finalRow != -1)
+                r = r.replace("{1}", finalRow.toString());
+            else
+                r = r.replace("{1}", "");
+            
+            return TIMEDATAPAGE + r;
+        }
+
+        function write(newRange, values, callback = "", activityIX = "") { //ActivityIX is only for callback... whatever man
+            var params = {
+                spreadsheetId: SPREADSHEETID,
+                range: newRange,
+                valueInputOption: 'USER_ENTERED',
+            };
+
+            var valueRangeBody = {
+                "majorDimension": "ROWS",
+                "range": newRange,
+                "values": [values]
+            };
+
+            var request = gapi.client.sheets.spreadsheets.values.update(params, valueRangeBody);
+            request.then(function(response) {
+                console.log(response.result);
+                if (callback != "")
+                    callback(newRange, values, activityIX);
+            }, function(reason) {
+                console.error('error: ' + reason.result.error.message);
+            });
+	    }
+
+        function createActivityCard(name, startDate, categoryIX, params) {
+            var clone = actCardT.content.cloneNode(true);
+            clone.querySelector("[id='header']").className += " " + CATEGORYCLASSES[categoryIX];
+            clone.querySelector("[id='title']").innerHTML = name;
+            clone.querySelector("[id='categoryName']").innerHTML = CATEGORYNAMES[categoryIX];
+            clone.querySelector("[id='startTime']").innerHTML = startDate;
+            clone.querySelector("[id='btnCloseAct']").onclick = function() { closeActivity(params)};
+            clone.querySelector("[id='btnCancelAct']").onclick = function() { cancelActivity(params)};
+            timers.push([clone.querySelector("[id='ellapsedTime']"), parseDate(startDate).getTime()]);
+            cardDeck.appendChild(clone);
+            actCards.push(params);
+        }
+
+        function updateTimers() {
+            for (var i = 0; i < timers.length; i++) {
+                var time = new Date().getTime() - timers[i][1];
+                timers[i][0].innerHTML = msToHMS(time);
+            }
+        }
+
+        function popActCardByRange(range) {
+            for (var i = 0; i < actCards.length; i++)
+                if (actCards[i] == range) {
+                    actCards.splice(i, 1);
+                    return cardDeck.children[i+1]; // 0th children is template
+                }
+            
+            return null;
+        }
+
+        // --------------------------------------------------------------------------------------
+
+        function sendActivityClick() {
+            var selectedCategoryIX = document.querySelector('input[name="activityCat"]:checked').value;
+            sendActivity(txtActivityName.value, txtActivityDetails.value, selectedCategoryIX, TIMEOFFSETS[slider.value]);
+        }
+
+        function time_offset_change() {
+            timeOffsetLabel.innerHTML = sToHMS(TIMEOFFSETS[slider.value]);
+        }
+
+        function parseDate(dateString) {
+            var date = dateString.split(' ')[0];
+            var time = dateString.split(' ')[1];
+
+            var d = new Date();
+            d.setFullYear(date.split('/')[2]);
+            d.setMonth(date.split('/')[1] - 1);
+            d.setDate(date.split('/')[0]);
+
+            d.setHours(time.split(':')[0]);
+            d.setMinutes(time.split(':')[1]);
+            d.setSeconds(time.split(':')[2]);
+
+            return d;
+        }
+
+        Date.prototype.hhmmss = function() {
+            var hh = this.getHours();
+            var mm = this.getMinutes();
+            var ss = this.getSeconds();
+            
+            return [(hh>9 ? '' : '0') + hh,
+                (mm>9 ? '' : '0') + mm,
+                (ss>9 ? '' : '0') + ss
+                ].join(':');
         };
 
-        if (gapi.client.getToken() === null) {
-          // Prompt the user to select a Google Account and ask for consent to share their data
-          // when establishing a new session.
-          tokenClient.requestAccessToken({prompt: 'consent'});
-        } else {
-          // Skip display of account chooser and consent dialog for an existing session.
-          tokenClient.requestAccessToken({prompt: ''});
-        }
-      }
+        Date.prototype.ddmmyyyy = function() {
+            var mm = this.getMonth() + 1; // getMonth() is zero-based
+            var dd = this.getDate();
+            return [(dd>9 ? '' : '0') + dd,
+                    (mm>9 ? '' : '0') + mm,
+                    this.getFullYear()
+                    ].join('/');
+        };
 
-      /**
-       *  Sign out the user upon button click.
-       */
-      function handleSignoutClick() {
-        const token = gapi.client.getToken();
-        if (token !== null) {
-          google.accounts.oauth2.revoke(token.access_token);
-          gapi.client.setToken('');
-          document.getElementById('content').innerText = '';
-          document.getElementById('authorize_button').innerText = 'Authorize';
-          document.getElementById('signout_button').style.visibility = 'hidden';
-        }
-      }
+        function sToHMS(s) {
+            var ss = Math.abs(s);
+            var hh = parseInt( ss / 3600 );
+            ss = ss % 3600;
+            var mm = parseInt( ss / 60 );
+            ss = Math.floor(ss % 60);
 
-      /**
-       * Print the names and majors of students in a sample spreadsheet:
-       * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-       */
-      async function listMajors() {
-        let response;
-        try {
-          // Fetch first 10 files
-          response = await gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-            range: 'Class Data!A2:E',
-          });
-        } catch (err) {
-          document.getElementById('content').innerText = err.message;
-          return;
+            var ret = (s<0 ? '-':'');
+            ret += (hh>0 ? hh + ':': '')
+            ret +=  [(mm>9 ? '' : '0') + mm,
+                (ss>9 ? '' : '0') + ss
+                ].join(':');
+
+            return ret;
         }
-        const range = response.result;
-        if (!range || !range.values || range.values.length == 0) {
-          document.getElementById('content').innerText = 'No values found.';
-          return;
+
+        function msToHMS(ms) {
+            var ss = Math.abs(ms / 1000);
+            var hh = parseInt( ss / 3600 );
+            ss = ss % 3600;
+            var mm = parseInt( ss / 60 );
+            ss = Math.floor(ss % 60);
+
+            return (ms<0 ? '-':'') + 
+                [(hh>9 ? '' : '0') + hh,
+                (mm>9 ? '' : '0') + mm,
+                (ss>9 ? '' : '0') + ss
+                ].join(':');
         }
-        // Flatten to string to display
-        const output = range.values.reduce(
-            (str, row) => `${str}${row[0]}, ${row[4]}\n`,
-            'Name, Major:\n');
-        document.getElementById('content').innerText = output;
-      }
+
+        function getDateTimeString(offset = 0) {
+            var date = new Date();
+            var newDate = new Date(date.getTime() + offset*1000);
+            return newDate.ddmmyyyy() + " " + newDate.hhmmss();
+	    }
+
+        // --------------------------------------------------------------------------------------
+
+        function handleClientLoad() {
+		    gapi.load('client:auth2', initClient);
+        }
+    
+        function initClient() {
+		console.log("Logging");
+            gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: DISCOVERY_DOCS,
+                scope: SCOPES
+            }).then(function () {
+                // Listen for sign-in state changes.
+                gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+                // Handle the initial sign-in state.
+                updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+                authorizeButton.onclick = handleAuthClick;
+                signoutButton.onclick = handleSignoutClick;
+				console.log("Logged");
+                
+                onReady();
+            }, function(error) {
+                //appendPre(JSON.stringify(error, null, 2), 'log');
+            });
+        }
+
+        function updateSigninStatus(isSignedIn) {
+            if (isSignedIn) {
+                authorizeButton.hidden = true;
+                signoutButton.hidden = false;
+            } else {
+                authorizeButton.hidden = false;
+                document.getElementById("authorizeLoadIcon").hidden = true;
+                signoutButton.hidden = true;
+            }
+        }
+        
+        function handleAuthClick(event) {
+            document.getElementById("authorizeLoadIcon").hidden = false;
+            gapi.auth2.getAuthInstance().signIn();
+        }
+        
+        function handleSignoutClick(event) {
+            gapi.auth2.getAuthInstance().signOut();
+        }
     </script>
-    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
-  </body>
+    <script async defer src="https://apis.google.com/js/api.js"
+        onload="this.onload=function(){};handleClientLoad()"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+  </script>
 </html>

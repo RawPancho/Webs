@@ -1,0 +1,114 @@
+/* General Styling */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 24px;
+  color: #3f51b5;
+}
+
+a {
+  color: #3f51b5;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Flash Message */
+#flash-message {
+  background-color: #ffeb3b;
+  color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  display: none;
+}
+
+/* Principal Division */
+.divisionPrincipal {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+/* Buttons */
+button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 10px 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:disabled {
+  background-color: #e0e0e0;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #5c6bc0;
+}
+
+.btn-primary {
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+.spaced {
+  margin: 5px;
+}
+
+/* Inputs and Labels */
+label {
+  font-weight: bold;
+  color: #3f51b5;
+}
+
+.text-boxpand {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  transition: border-color 0.3s;
+}
+
+.text-boxpand:focus {
+  outline: none;
+  border-color: #3f51b5;
+}
+
+/* Datalist */
+.Lists {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+/* Additional Elements */
+.separaciones {
+  padding: 10px 0;
+  margin: 15px 0;
+  border-top: 1px solid #eee;
+  text-align: left;
+}
